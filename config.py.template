@@ -2,3 +2,4 @@
 token = "foo"
 owner = "foo"
 repo = "foo"
+image = "history"

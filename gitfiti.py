@@ -8,6 +8,7 @@ import itertools
 import json
 import math
 import config
+import gitart
 
 try:
     # Python 3+
@@ -26,97 +27,6 @@ except NameError:
 
 
 GITHUB_BASE_URL = 'https://github.com/'
-FALLBACK_IMAGE = 'kitty'
-
-KITTY = [
-  [0,0,0,4,0,0,0,0,4,0,0,0],
-  [0,0,4,2,4,4,4,4,2,4,0,0],
-  [0,0,4,2,2,2,2,2,2,4,0,0],
-  [2,2,4,2,4,2,2,4,2,4,2,2],
-  [0,0,4,2,2,3,3,2,2,4,0,0],
-  [2,2,4,2,2,2,2,2,2,4,2,2],
-  [0,0,0,3,4,4,4,4,3,0,0,0],
-]
-
-ONEUP = [
-  [0,4,4,4,4,4,4,4,0],
-  [4,3,2,2,1,2,2,3,4],
-  [4,2,2,1,1,1,2,2,4],
-  [4,3,4,4,4,4,4,3,4],
-  [4,4,1,4,1,4,1,4,4],
-  [0,4,1,1,1,1,1,4,0],
-  [0,0,4,4,4,4,4,0,0],
-]
-
-ONEUP2 = [
-  [0,0,4,4,4,4,4,4,4,0,0],
-  [0,4,2,2,1,1,1,2,2,4,0],
-  [4,3,2,2,1,1,1,2,2,3,4],
-  [4,3,3,4,4,4,4,4,3,3,4],
-  [0,4,4,1,4,1,4,1,4,4,0],
-  [0,0,4,1,1,1,1,1,4,0,0],
-  [0,0,0,4,4,4,4,4,0,0,0],
-]
-
-HACKERSCHOOL = [
-  [4,4,4,4,4,4],
-  [4,3,3,3,3,4],
-  [4,1,3,3,1,4],
-  [4,3,3,3,3,4],
-  [4,4,4,4,4,4],
-  [0,0,4,4,0,0],
-  [4,4,4,4,4,4],
-]
-
-OCTOCAT2 = [
-  [0,0,4,0,0,4,0],
-  [0,4,4,4,4,4,4],
-  [0,4,1,3,3,1,4],
-  [0,4,4,4,4,4,4],
-  [4,0,0,4,4,0,0],
-  [0,4,4,4,4,4,0],
-  [0,0,0,4,4,4,0],
-]
-
-HELLO = [
-  [0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,4],
-  [0,2,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,4],
-  [0,3,3,3,0,2,3,3,0,3,0,3,0,1,3,1,0,3],
-  [0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,3],
-  [0,3,0,3,0,3,3,3,0,3,0,3,0,3,0,3,0,2],
-  [0,2,0,2,0,2,0,0,0,2,0,2,0,2,0,2,0,0],
-  [0,1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,4],
-]
-
-HIREME = [
-  [1,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [3,3,3,0,2,0,3,3,3,0,2,3,3,0,0,3,3,0,3,0,0,2,3,3],
-  [4,0,4,0,4,0,4,0,0,0,4,0,4,0,0,4,0,4,0,4,0,4,0,4],
-  [3,0,3,0,3,0,3,0,0,0,3,3,3,0,0,3,0,3,0,3,0,3,3,3],
-  [2,0,2,0,2,0,2,0,0,0,2,0,0,0,0,2,0,2,0,2,0,2,0,0],
-  [1,0,1,0,1,0,1,0,0,0,1,1,1,0,0,1,0,1,0,1,0,1,1,1],
-]
-
-OCTOCAT = [
-  [0,0,4,0,0,0,4,0],
-  [0,4,4,4,4,4,4,4],
-  [0,4,1,3,3,3,1,4],
-  [0,3,4,3,3,3,4,3],
-  [4,0,0,4,4,4,0,0],
-  [0,4,4,4,4,4,4,4],
-  [0,4,0,4,0,4,0,4],
-]
-
-PINMIKE = [
-  [2,4,4,4,4,4,1,1,2,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,4,1,2,4,1,1,1,1,1,4,4,1,1,2,4,1,1,0,4,0,0,0,4,0],
-  [1,2,4,4,1,2,4,1,1,1,1,2,4,4,4,4,1,2,4,4,4,4,4,4,4,1,1,1,1,2,4,1,2,4,2,4,1,2,4,1,2,4,1,1,4,4,4,4,4,4,4],
-  [1,2,4,1,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,2,4,1,2,4,4,4,4,1,2,4,1,1,4,1,3,3,3,1,4],
-  [1,2,4,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,4,1,1,2,4,1,1,1,1,2,4,1,1,3,4,3,3,3,4,3],
-  [1,2,4,4,4,4,1,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,2,4,2,4,1,2,4,1,1,1,1,1,1,1,1,0,0,4,4,4,0,0],
-  [1,2,4,1,1,1,1,2,4,4,4,2,4,1,2,4,1,2,4,1,2,4,1,2,4,1,4,4,4,2,4,1,2,4,1,2,4,4,4,1,2,4,1,1,4,4,4,4,4,4,4],
-  [2,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,0,4,0,4,0,4]
-]
 
 ASCII_TO_NUMBER = {
   '_': 0,
@@ -157,16 +67,15 @@ ONEUP_STR = str_to_sprite('''
 
 
 IMAGES = {
-  'kitty': KITTY,
-  'oneup': ONEUP,
-  'oneup2': ONEUP2,
-  'hackerschool': HACKERSCHOOL,
-  'octocat': OCTOCAT,
-  'octocat2': OCTOCAT2,
-  'hello': HELLO,
-  'hireme': HIREME,
-  'pinmike': PINMIKE,
-  'oneup_str': ONEUP_STR,
+  'kitty': gitart.KITTY,
+  'oneup': gitart.ONEUP,
+  'oneup2': gitart.ONEUP2,
+  'hackerschool': gitart.HACKERSCHOOL,
+  'octocat': gitart.OCTOCAT,
+  'octocat2': gitart.OCTOCAT2,
+  'hello': gitart.HELLO,
+  'hireme': gitart.HIREME,
+  'history': gitart.HISTORY,
 }
 
 def load_images(img_names):
@@ -332,6 +241,7 @@ def main():
     max_daily_commits = find_max_daily_commits(contributions_calendar)
 
     fake_it_multiplier = calculate_multiplier(max_daily_commits)
+
     print("fake it multipler:")
     print(fake_it_multiplier)
 
@@ -358,30 +268,22 @@ def main():
 #    print('Enter the image name to gitfiti')
 #    print('Images: ' + ', '.join(images.keys()))
 
-    image = config.owner
+    image = config.image
 
-    image_name_fallback = FALLBACK_IMAGE
-
-    if not image:
-        image = IMAGES[image_name_fallback]
-    else:
-        try:
-            image = images[image]
-        except:
-            image = IMAGES[image_name_fallback]
+    try:
+        image = images[image]
+    except:
+        print("Image not found")
+        quit()
 
     start_date = get_start_date()
     
-#    if not ghe:
     git_url = 'git@github.com'
-#    else:
-#        git_url = request_user_input('Enter Git URL like git@site.github.com: ')
 
     output = fake_it(image, start_date, username, repo, git_url, offset, fake_it_multiplier)
 
     save(output, 'gitfiti.sh')
-#    print('gitfiti.sh saved.')
-#    print('Create a new(!) repo at {0}new and run the script'.format(git_base))
+
     quit()
 
 if __name__ == '__main__':
