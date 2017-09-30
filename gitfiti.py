@@ -195,6 +195,7 @@ def fake_it(image, start_date, username, repo, git_url, offset=0, multiplier=1):
     template = (
         '#!/bin/bash\n'
         'REPO={0}\n'
+        'rm -rf $REPO\n'
         'git init $REPO\n'
         'cd $REPO\n'
         'touch README.md\n'
