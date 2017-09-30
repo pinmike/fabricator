@@ -146,10 +146,13 @@ def calculate_multiplier(max_commits):
 
     if m == 0:
         return 1
-
-    m = math.ceil(m)
-    m = int(m)
-    return m
+    else:
+        if m > 20:
+            return 5
+        else:
+            m = math.ceil(m)
+            m = int(m)
+            return m
 
 
 def get_start_date():
@@ -240,6 +243,9 @@ def main():
     contributions_calendar = retrieve_contributions_calendar(username, git_base)
 
     max_daily_commits = find_max_daily_commits(contributions_calendar)
+
+    print("max_daily_commits:")
+    print(max_daily_commits)
 
     fake_it_multiplier = calculate_multiplier(max_daily_commits)
 

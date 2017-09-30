@@ -3,9 +3,10 @@ gitfiti.sh
 config.py
 /fabrication
 
-# sublime project files
+# IDE project files
 fabricator.sublime-project
 fabricator.sublime-workspace
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
